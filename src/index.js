@@ -4,10 +4,12 @@ import { stdin as input, stdout as output } from 'node:process';
 import { closeApp } from './app/closeApp.js';
 import { startApp } from './app/startApp.js';
 import os from 'node:os';
+import { handleCommands } from './handleCommands.js';
 
-const startingWorkingDirectory = os.homedir(); 
+const workingDirectory = os.homedir(); 
 const username = parseArgs() || 'Guest';
-startApp(username, startingWorkingDirectory);
+startApp(username, workingDirectory);
 
 export const rl = readline.createInterface({ input, output });
+handleCommands(rl, workingDirectory);
 closeApp(username, rl);
