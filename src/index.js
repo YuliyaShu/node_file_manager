@@ -1,4 +1,4 @@
-import { parseArgs }  from './cli/args.js';
+import { parseArgs }  from './process/args.js';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import { closeApp } from './app/closeApp.js';

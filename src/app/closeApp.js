@@ -5,8 +5,8 @@ export const closeApp = async (username, rl) => {
     };
     rl.on('SIGINT', () => thanksAndClose());
     rl.on('line', (data) => {
-    if (data === '.exit') {
-        thanksAndClose();
-    }
+        if (data === '.exit') {
+            thanksAndClose();
+        }
     });
 }

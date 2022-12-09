@@ -4,5 +4,3 @@ export const parseArgs = () => {
         .map((item) => item.split('=')[1]);
     return arr[0];
 };
-
-parseArgs();
