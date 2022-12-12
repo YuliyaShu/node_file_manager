@@ -1,5 +1,6 @@
 import { up } from "./nwd/up.js";
 import { cd } from './nwd/cd.js';
+import { ls } from "./nwd/ls.js";
 import { callWorkingDirectory } from "./utils/callWorkingDirectory.js";
 
 export const handleCommands = (rl, workingDirectory) => {
@@ -8,14 +9,21 @@ export const handleCommands = (rl, workingDirectory) => {
             case 'up':
                 workingDirectory = up(workingDirectory);
                 break;
+
             case data.match(/^cd/)?.input:
                 workingDirectory = await cd(workingDirectory, data);
                 break;
+
+            case 'ls':
+                await ls(workingDirectory);
+                break;
+
             default:
                 callWorkingDirectory(workingDirectory);
                 console.log(`Invalid input. Type one of these commands:
                     up
-                    cd "path_to_directory"`);
+                    cd "path_to_directory"
+                    ls`);
         }
     });
 } 
