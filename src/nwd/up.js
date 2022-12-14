@@ -2,6 +2,7 @@ import { callWorkingDirectory } from "../utils/callWorkingDirectory.js";
 
 export const up = (workingDirectory) => {
     try {
+        process.chdir(workingDirectory);
         const arrOfDirs = workingDirectory.toString().split('\\');
         const newWorkingDirectory = (() => {
             switch (arrOfDirs.length) {

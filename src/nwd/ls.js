@@ -1,7 +1,9 @@
 import { readdir } from 'node:fs/promises';
+import { callWorkingDirectory } from "../utils/callWorkingDirectory.js";
 
 export const ls = async (workingDirectory) => {
     try {
+        process.chdir(workingDirectory);
         const dirContent = await readdir(workingDirectory, {withFileTypes: true});
         const listOfDirs = [];
         const listOfFiles = [];
@@ -16,6 +18,7 @@ export const ls = async (workingDirectory) => {
         } )
         const resultList = listOfDirs.concat(listOfFiles);
         console.table(resultList);
+        callWorkingDirectory(workingDirectory);
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');

@@ -4,6 +4,7 @@ import path from 'path';
 
 export const cd = async (workingDirectory, data) => {
     try {
+        process.chdir(workingDirectory);
         if (!data.match(/^cd "(.*)"$/)?.input) {
             callWorkingDirectory(workingDirectory);
             console.log('Operation failed. Incorrect format. Should use "". Did you mean cd "path_to_directory"?');
@@ -19,6 +20,7 @@ export const cd = async (workingDirectory, data) => {
             const absPathToDirectory = path.resolve(pathToDirectory);
             pathToDirectory = absPathToDirectory;
         }
+        console.log('🚀 ~ cd ~ pathToDirectory', pathToDirectory);
         return await stat(pathToDirectory)
             .then(stats => {
                 if (!stats.isDirectory()) {
@@ -40,4 +42,5 @@ export const cd = async (workingDirectory, data) => {
             console.error(error.message);
         }
     }
+       
 }
