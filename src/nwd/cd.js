@@ -37,6 +37,7 @@ export const cd = async (workingDirectory, data) => {
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');
+            console.error(error.message);
         }
     }
 }

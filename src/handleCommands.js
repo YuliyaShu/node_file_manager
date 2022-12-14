@@ -1,8 +1,9 @@
+import { callWorkingDirectory } from "./utils/callWorkingDirectory.js";
 import { up } from "./nwd/up.js";
 import { cd } from './nwd/cd.js';
 import { ls } from "./nwd/ls.js";
 import { cat } from "./fs/cat.js";
-import { callWorkingDirectory } from "./utils/callWorkingDirectory.js";
+import { add } from "./fs/add.js";
 
 export const handleCommands = (rl, workingDirectory) => {
     try {
@@ -27,18 +28,25 @@ export const handleCommands = (rl, workingDirectory) => {
                     cat(workingDirectory, data);
                     break;
 
+                case data.match(/^add/)?.input:
+                    add(workingDirectory, data);
+                    break;
+
                 default:
                     callWorkingDirectory(workingDirectory);
                     console.log(`Invalid input. Type one of these commands:
                         up
                         cd "path_to_directory"
                         ls
-                        cat "path_to_file"`);
+                        cat "path_to_file"
+                        add "new_file_name.extension"
+                        .exit`);
             }
         });
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');
+            console.error(error.message);
         }
     }
 } 

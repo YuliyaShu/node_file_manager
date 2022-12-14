@@ -18,6 +18,7 @@ export const up = (workingDirectory) => {
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');
+            console.error(error.message);
         }
     }
 }

@@ -6,10 +6,17 @@ import { startApp } from './app/startApp.js';
 import os from 'node:os';
 import { handleCommands } from './handleCommands.js';
 
-const workingDirectory = os.homedir(); 
-const username = parseArgs() || 'Guest';
-startApp(username, workingDirectory);
+try{
+    const workingDirectory = os.homedir(); 
+    const username = parseArgs() || 'Guest';
+    startApp(username, workingDirectory);
 
-export const rl = readline.createInterface({ input, output });
-handleCommands(rl, workingDirectory);
-closeApp(username, rl);
+    const rl = readline.createInterface({ input, output });
+    handleCommands(rl, workingDirectory);
+    closeApp(username, rl);
+} catch (error) {
+    if (error) {
+        console.log('Something went wrong. Try one more time');
+        console.error(error.message);
+    }
+}

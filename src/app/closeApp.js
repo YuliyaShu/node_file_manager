@@ -13,6 +13,7 @@ export const closeApp = async (username, rl) => {
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');
+            console.error(error.message);
         }
     }
 }
