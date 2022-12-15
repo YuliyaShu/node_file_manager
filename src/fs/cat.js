@@ -1,7 +1,4 @@
 import { createReadStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
-import path from 'node:path';
-import { parseArgs } from '../process/args.js';
 import { callWorkingDirectory } from '../utils/callWorkingDirectory.js';
 import { getAbsPath } from '../utils/getAbsPath.js';
 import { isPathToFileValid } from '../utils/isPathToFileValid.js';

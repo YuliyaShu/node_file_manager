@@ -1,4 +1,4 @@
-import { readdir, stat, rename } from 'node:fs/promises';
+import { readdir, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { callWorkingDirectory } from '../utils/callWorkingDirectory.js';
 import { getAbsPath } from '../utils/getAbsPath.js';
