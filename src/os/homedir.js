@@ -1,7 +1,9 @@
+import { callWorkingDirectory } from '../utils/callWorkingDirectory.js';
+
 export const homedir = (workingDirectory) => {
     try {
         process.chdir(workingDirectory);
-        
+        callWorkingDirectory(workingDirectory);
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');
