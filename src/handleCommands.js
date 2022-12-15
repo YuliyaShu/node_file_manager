@@ -11,6 +11,7 @@ import { rm } from "./fs/rm.js";
 import { os } from "./os/os.js";
 import { hash } from "./hash/hash.js";
 import { compress } from "./compress/compress.js";
+import { decompress } from "./compress/decompress.js";
 
 export const handleCommands = (rl, workingDirectory) => {
     try {
@@ -71,6 +72,10 @@ export const handleCommands = (rl, workingDirectory) => {
                     compress(workingDirectory, data);
                     break;
 
+                case data.match(/^decompress/)?.input:
+                    decompress(workingDirectory, data);
+                    break;
+
                 default:
                     callWorkingDirectory(workingDirectory);
                     console.log(`Invalid input. Type one of these commands:
@@ -89,6 +94,7 @@ export const handleCommands = (rl, workingDirectory) => {
                         os --username
                         os --architecture
                         compress "path_to_file" "path_to_compressed_file"
+                        decompress "path_to_compressed_file" "path_to_file" 
                         .exit`);
             }
         });

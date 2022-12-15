@@ -4,6 +4,7 @@ import { pipeline } from 'node:stream/promises';
 import { callWorkingDirectory } from '../utils/callWorkingDirectory.js';
 import { getAbsPath } from '../utils/getAbsPath.js';
 import { isPathToFileValid } from '../utils/isPathToFileValid.js';
+import { createBrotliCompress } from 'node:zlib';
 
 export const compress = async (workingDirectory, data) => {
     try {
@@ -39,7 +40,8 @@ export const compress = async (workingDirectory, data) => {
                 console.log('Operation failed. Archive already exists.');
                 return;
             }
-            await pipeline(createReadStream(pathToFile), createWriteStream(pathToCompressedFile, {flags: 'a'}));
+            const compressIt = createBrotliCompress();
+            await pipeline(createReadStream(pathToFile), compressIt, createWriteStream(pathToCompressedFile, {flags: 'a'}));
             console.log('File was successfully compressed!');
             callWorkingDirectory(workingDirectory);
         }
