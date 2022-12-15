@@ -5,6 +5,7 @@ import { ls } from "./nwd/ls.js";
 import { cat } from "./fs/cat.js";
 import { add } from "./fs/add.js";
 import { rn } from "./fs/rn.js";
+import { cp } from "./fs/cp.js";
 
 export const handleCommands = (rl, workingDirectory) => {
     try {
@@ -37,6 +38,10 @@ export const handleCommands = (rl, workingDirectory) => {
                     rn(workingDirectory, data);
                     break;
 
+                case data.match(/^cp/)?.input:
+                    cp(workingDirectory, data);
+                    break;
+
                 default:
                     callWorkingDirectory(workingDirectory);
                     console.log(`Invalid input. Type one of these commands:
@@ -46,6 +51,7 @@ export const handleCommands = (rl, workingDirectory) => {
                         cat "path_to_file"
                         add "new_file_name.extension"
                         rn "path_to_file" "new_filename"
+                        cp "path_to_file" "path_to_new_directory"
                         .exit`);
             }
         });
