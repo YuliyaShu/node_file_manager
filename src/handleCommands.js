@@ -8,6 +8,7 @@ import { rn } from "./fs/rn.js";
 import { cp } from "./fs/cp.js";
 import { mv } from "./fs/mv.js";
 import { rm } from "./fs/rm.js";
+import { os } from "./os/os.js";
 
 export const handleCommands = (rl, workingDirectory) => {
     try {
@@ -52,6 +53,14 @@ export const handleCommands = (rl, workingDirectory) => {
                     rm(workingDirectory, data);
                     break;
 
+                case 'os --EOL':
+                case 'os --cpus':
+                case 'os --homedir':
+                case 'os --username':
+                case 'os --architecture':
+                    os(workingDirectory, data);
+                    break;
+
                 default:
                     callWorkingDirectory(workingDirectory);
                     console.log(`Invalid input. Type one of these commands:
@@ -64,6 +73,11 @@ export const handleCommands = (rl, workingDirectory) => {
                         cp "path_to_file" "path_to_new_directory"
                         mv "path_to_file" "path_to_new_directory"
                         rm "path_to_file"
+                        os --EOL
+                        os --cpus
+                        os --homedir
+                        os --username
+                        os --architecture
                         .exit`);
             }
         });
