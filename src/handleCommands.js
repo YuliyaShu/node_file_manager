@@ -10,6 +10,7 @@ import { mv } from "./fs/mv.js";
 import { rm } from "./fs/rm.js";
 import { os } from "./os/os.js";
 import { hash } from "./hash/hash.js";
+import { compress } from "./compress/compress.js";
 
 export const handleCommands = (rl, workingDirectory) => {
     try {
@@ -66,6 +67,10 @@ export const handleCommands = (rl, workingDirectory) => {
                     hash(workingDirectory, data);
                     break;
 
+                case data.match(/^compress/)?.input:
+                    compress(workingDirectory, data);
+                    break;
+
                 default:
                     callWorkingDirectory(workingDirectory);
                     console.log(`Invalid input. Type one of these commands:
@@ -83,6 +88,7 @@ export const handleCommands = (rl, workingDirectory) => {
                         os --homedir
                         os --username
                         os --architecture
+                        compress "path_to_file" "path_to_compressed_file"
                         .exit`);
             }
         });
