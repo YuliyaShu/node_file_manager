@@ -9,6 +9,7 @@ import { cp } from "./fs/cp.js";
 import { mv } from "./fs/mv.js";
 import { rm } from "./fs/rm.js";
 import { os } from "./os/os.js";
+import { hash } from "./hash/hash.js";
 
 export const handleCommands = (rl, workingDirectory) => {
     try {
@@ -59,6 +60,10 @@ export const handleCommands = (rl, workingDirectory) => {
                 case 'os --username':
                 case 'os --architecture':
                     os(workingDirectory, data);
+                    break;
+
+                case data.match(/^hash/)?.input:
+                    hash(workingDirectory, data);
                     break;
 
                 default:
