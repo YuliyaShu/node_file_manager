@@ -1,3 +1,9 @@
+// Cross-check helpers:
+// npm run start -- --username=Reviewer
+// rm "test.js"
+// decompress "test.br" "test.js"
+// hash "test.js"
+
 import { createReadStream, createWriteStream } from 'node:fs';
 import { readdir, rm } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
