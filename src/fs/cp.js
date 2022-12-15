@@ -1,6 +1,11 @@
+import { createReadStream, createWriteStream } from 'node:fs';
 import { readdir, stat, rename } from 'node:fs/promises';
 import path from 'node:path';
+import { pipeline } from 'node:stream/promises';
 import { callWorkingDirectory } from '../utils/callWorkingDirectory.js';
+import { getAbsPath } from '../utils/getAbsPath.js';
+import { isPathToDirectoryValid } from '../utils/isPathToDirectoryValid.js';
+import { isPathToFileValid } from '../utils/isPathToFileValid.js';
 
 export const cp = async (workingDirectory, data) => {
     try {
@@ -10,51 +15,33 @@ export const cp = async (workingDirectory, data) => {
             console.log('Operation failed. Incorrect format. Should use "". Did you mean cp "path_to_file" "path_to_new_directory"?');
             return;
         }
-        let dataArray = data.split('"');
-        let pathToFile = dataArray[1];
-        let pathToNewDirectory = dataArray[3];
-        
-        if (pathToFile === '') {
-            callWorkingDirectory(workingDirectory);
-            console.log('Operation failed. Insert path to file. Did you mean cp "path_to_file" "path_to_new_directory"?');
-            return;
-        }
-        if (!path.isAbsolute(pathToFile)) {
-            const absPathToFile = path.resolve(pathToFile);
-            pathToFile = absPathToFile;
-        }
 
-        
+        let dataArray = data
+            .split('"')
+            .reduce((res, unit, index) => {
+                if (index % 2) res.push(unit);
+                return res;
+            }, []);
 
-        let pathToFolderArr = pathToFile.split('\\');
-        const fileName = pathToFolderArr.pop();
-        const pathToFolder = pathToFolderArr.join('/');
+        let [pathToFile, pathToNewDirectory]  = dataArray;
         
-        const extension = '.' + fileName.split('.')[1];
-        if (extension === '.undefined') {
-            console.log('Operation failed. Check an extension of your file');
-            return;
-        }
-        newFileName = newFileName + extension;
-        const pathToNewFile = path.join(pathToFolder, newFileName);
-        const files = await readdir(pathToFolder); 
-        if (files.includes(newFileName)) {
-            console.log('File is already exist. Choose another new filename');
-            return;
-        }
-        await stat(pathToFile)
-        .then(async stats => {
-            if (stats.isFile()) {
-                await rename(pathToFile, pathToNewFile);
-                console.log('File was successfully renamed!');
-            } else {
-                console.log('Operation failed. No such file.');
+        if (await isPathToFileValid(pathToFile, workingDirectory)) {
+            if (await isPathToDirectoryValid(pathToNewDirectory)) {
+                const fileName = pathToFile.split('\\').pop();
+                pathToFile = getAbsPath(pathToFile);
+                pathToNewDirectory = getAbsPath(pathToNewDirectory);
+                const pathToNewFile = path.join(pathToNewDirectory, fileName);
+                if ((await readdir(pathToNewDirectory)).includes(fileName)) {
+                    callWorkingDirectory(workingDirectory);
+                    console.log('Operation failed. File already exist.');
+                    return;
+                }
+
+                await pipeline(createReadStream(pathToFile), createWriteStream(pathToNewFile, {flags: 'a'}));
+                console.log('File was successfully copied!');
+                callWorkingDirectory(workingDirectory);
             }
-        })
-        .catch((error) => {
-            if (error) console.log('Operation failed. No such file.');
-        });
-        callWorkingDirectory(workingDirectory);
+        }
     } catch (error) {
         if (error) {
             console.log('Something went wrong. Try one more time');

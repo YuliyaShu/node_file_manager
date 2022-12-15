@@ -21,7 +21,7 @@ export const isPathToFileValid = async (pathToFile, workingDirectory) => {
                 }
             })
             .catch(() => {
-                console.log('Operation failed. No such file.');
+                console.log('Operation failed. No such file. Don\'t forget to add an extension.');
                 callWorkingDirectory(workingDirectory);
                 return false;
             });
